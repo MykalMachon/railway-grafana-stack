@@ -5,6 +5,11 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+  - job_name: indexer
+    metrics_path: '/sync-metrics'
+    static_configs:
+      - targets:
+          - "indexer-8n2y.railway.internal:8080"
 
   # - job_name: 'example_api'
   #   scheme: http
