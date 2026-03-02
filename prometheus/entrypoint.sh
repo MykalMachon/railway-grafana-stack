@@ -7,4 +7,5 @@ sed "s/\${PROMETHEUS_SCRAPE_INTERVAL}/${PROMETHEUS_SCRAPE_INTERVAL:-15s}/g" \
 # Start Prometheus
 exec /bin/prometheus \
   --config.file=/tmp/prom.yml \
-  --storage.tsdb.path=/prometheus
+  --storage.tsdb.path=/prometheus \
+  $PROMETHEUS_FLAGS
