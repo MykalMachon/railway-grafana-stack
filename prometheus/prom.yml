@@ -1,5 +1,5 @@
 global:
-  scrape_interval: 15s # Default scrape interval
+  scrape_interval: ${PROMETHEUS_SCRAPE_INTERVAL} # Default scrape interval
 
 scrape_configs:
   - job_name: 'prometheus'

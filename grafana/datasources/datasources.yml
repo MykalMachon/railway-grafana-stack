@@ -32,6 +32,8 @@ datasources:
     basicAuthUser:
     withCredentials:
     isDefault: false
+    jsonData:
+      timeInterval: $GF_PROMETHEUS_SCRAPE_INTERVAL
   - name: Tempo
     type: tempo
     access: proxy

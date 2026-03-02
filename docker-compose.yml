@@ -11,6 +11,8 @@ services:
       - "9090:9090"
     volumes:
       - prometheus_data:/prometheus
+    environment:
+      - PROMETHEUS_SCRAPE_INTERVAL=15s
 
   loki:
     build:
@@ -50,6 +52,7 @@ services:
       - LOKI_INTERNAL_URL=http://loki:3100
       - PROMETHEUS_INTERNAL_URL=http://prometheus:9090
       - TEMPO_INTERNAL_URL=http://tempo:3200
+      - GF_PROMETHEUS_SCRAPE_INTERVAL=15s
   
   example_api: 
     build:

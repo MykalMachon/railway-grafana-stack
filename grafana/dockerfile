@@ -2,5 +2,8 @@ ARG VERSION=11.5.2
 
 FROM grafana/grafana-oss:${VERSION}
 
+# Default scrape interval for Prometheus datasource
+ENV GF_PROMETHEUS_SCRAPE_INTERVAL=15s
+
 # copy the datasources and dashboards
 COPY datasources /etc/grafana/provisioning/datasources
