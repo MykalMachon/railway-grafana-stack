@@ -40,6 +40,9 @@ This template is perfect for teams who need a comprehensive observability soluti
 | `GF_SECURITY_ADMIN_PASSWORD` | Password for the Grafana admin account | Auto-generated secure string |
 | `GF_DEFAULT_INSTANCE_NAME` | Name of your Grafana instance | `Grafana on Railway` |
 | `GF_INSTALL_PLUGINS` | Comma-separated list of Grafana plugins to install | `grafana-simple-json-datasource,grafana-piechart-panel,grafana-worldmap-panel,grafana-clock-panel` |
+| `PROMETHEUS_SCRAPE_INTERVAL` | How often Prometheus scrapes targets | `15s` |
+| `GF_PROMETHEUS_SCRAPE_INTERVAL` | Minimum scrape interval shown in Grafana dashboards | `15s` |
+| `PROMETHEUS_FLAGS` | Optional runtime flags for Prometheus (e.g. `--web.enable-otlp-receiver`) | _(empty)_ |
 
 ### Internal Service URLs
 
@@ -96,6 +99,8 @@ This template deploys four interconnected services:
 - Time-series database for metrics collection
 - Configured with sensible defaults for monitoring
 - Persistent volume for metrics data
+- Configurable scrape interval via `PROMETHEUS_SCRAPE_INTERVAL` environment variable
+- Support for optional runtime flags via `PROMETHEUS_FLAGS` (e.g. `--web.enable-otlp-receiver`)
 
 ### Loki
 - Log aggregation system designed to be cost-effective
