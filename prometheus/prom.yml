@@ -17,7 +17,7 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   - job_name: 'wanadi-health-api'
-    metrics_path: /metrics
+    metrics_path: /v1/metrics
     scheme: https
     static_configs:
       - targets: ['wanadiapi-production.up.railway.app']
