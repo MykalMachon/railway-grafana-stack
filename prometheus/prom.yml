@@ -1,21 +1,27 @@
 global:
-  scrape_interval: 15s # Default scrape interval
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'wanadi-health-monitor'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
 
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
 
-  # - job_name: 'example_api'
-  #   scheme: http
-  #   static_configs:
-  #     - targets: ['example_api:9091']
-
-  #  ? TODO: add your services here
-  # - job_name: 'your-job-name'
-  #   scheme: https
-  #   static_configs:
-  #     - targets: ['URL_GOES_HERE']
-  #   basic_auth:
-  #     username: HTTP_AUTH_USERNAME_GOES_HERE
-  #     password: HTTP_AUTH_PASSWORD_GOES_HERE
+  - job_name: 'wanadi-health-api'
+    metrics_path: /metrics
+    scheme: https
+    static_configs:
+      - targets: ['wanadiapi-production.up.railway.app']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'wanadi-health-api'
