@@ -1,7 +1,9 @@
+target: all, metrics-generator
+
 server:
   http_listen_port: 3200
 
-storage:
+storage:                                                       
   trace:
     backend: local
     local:
@@ -10,10 +12,22 @@ storage:
 distributor:
   log_received_spans:
         enabled: true
-  receivers:
+  receivers:                                                   
     otlp:
       protocols:
         grpc:
           endpoint: "0.0.0.0:4317"
         http:
           endpoint: "0.0.0.0:4318"
+
+metrics_generator:
+  storage:                                                     
+    path: /var/tempo/generator-wal
+    remote_write:
+      - url: https://prometheus-production-3352.up.railway.app/api/v1/write
+        send_exemplars: true
+
+overrides:
+  defaults:                                                    
+    metrics_generator:
+      processors: [service-graphs, span-metrics]
