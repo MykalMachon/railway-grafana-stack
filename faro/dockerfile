@@ -1,0 +1,7 @@
+ARG VERSION=latest
+
+FROM grafana/faro-dist:${VERSION}
+
+COPY faro.yml /etc/faro/faro.yml
+
+CMD ["-config.file=/etc/faro/faro.yml"]

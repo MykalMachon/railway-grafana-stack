@@ -1,0 +1,33 @@
+server:
+  http_listen_port: 12347
+  grpc_listen_port: 12348
+
+logging:
+  level: info
+
+auth:
+  enabled: false
+
+metrics:
+  enabled: true
+  wal:
+    directory: /var/faro/wal
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /var/faro/traces
+
+distributor:
+  receivers:
+    jaeger:
+      protocols:
+        thrift_http:
+          endpoint: "0.0.0.0:14268"
+    otlp:
+      protocols:
+        http:
+          endpoint: "0.0.0.0:4318"
+        grpc:
+          endpoint: "0.0.0.0:4317"

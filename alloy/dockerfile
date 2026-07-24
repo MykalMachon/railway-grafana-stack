@@ -1,0 +1,7 @@
+ARG VERSION=latest
+
+FROM grafana/alloy:${VERSION}
+
+COPY alloy.yml /etc/alloy/alloy.yml
+
+CMD ["run", "/etc/alloy/alloy.yml", "--server.http.listen-addr=0.0.0.0:12345"]

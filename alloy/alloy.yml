@@ -1,0 +1,63 @@
+// Grafana Alloy configuration for RUM data processing
+// Receives RUM data from Faro and forwards to observability stack
+
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+// OTLP receiver for metrics from Faro
+otelcol.receiver.otlp "default" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+
+  output {
+    metrics = [otelcol.processor.attributes.default.input]
+    traces  = [otelcol.processor.attributes.default.input]
+    logs    = [otelcol.processor.attributes.default.input]
+  }
+}
+
+// Add service name as attribute
+otelcol.processor.attributes "default" {
+  action {
+    key   = "service.name"
+    value = "rum-data"
+    action = "insert"
+  }
+
+  output {
+    metrics = [otelcol.exporter.prometheus.default.input]
+    traces  = [otelcol.exporter.otlp.tempo.input]
+    logs    = [otelcol.exporter.loki.default.input]
+  }
+}
+
+// Export metrics to Prometheus
+otelcol.exporter.prometheus "default" {
+  endpoint = "0.0.0.0:8888"
+}
+
+// Export traces to Tempo
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = env("TEMPO_INTERNAL_URL") != "" ? env("TEMPO_INTERNAL_URL") : "http://tempo:3200"
+    headers  = {}
+  }
+}
+
+// Export logs to Loki
+otelcol.exporter.loki "default" {
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = env("LOKI_INTERNAL_URL") != "" ? env("LOKI_INTERNAL_URL") : "http://loki:3100/loki/api/v1/push"
+  }
+}
